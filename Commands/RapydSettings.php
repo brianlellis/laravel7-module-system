@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Rapyd\Modules\System\Commands;
 
 use Carbon\Carbon;
 use Illuminate\Console\Command;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands\Tests;
+namespace App\Rapyd\Modules\System\Commands\Tests;
 
 use Carbon\Carbon;
 use Illuminate\Console\Command;
