@@ -58,6 +58,7 @@ class AdminScaffold
 
   public static function renderCompileJS($path, $id)
   {
+    // FIX GREP: ADD IN MODULE RESOURCES
     $asset_dir  = '/public/admin_resources/admin/js/';
     $asset_dir2 = '/public/resources/admin/js/';
     // CHECK FOR FILE EXISTENCE FIRST

@@ -317,6 +317,7 @@
                 <a href="/api/fulltext/reindex/class/cmspages" class="btn btn-primary btn-block">Reindex Cms Pages</a>
                 <a href="/api/fulltext/reindex/class/cmsblog" class="btn btn-primary btn-block">Reindex Cms Blog</a>
                 <a href="/api/fulltext/reindex/class/obligees" class="btn btn-primary btn-block">Reindex Obligee</a>
+                <a href="/api/fulltext/reindex/class/policies" class="btn btn-primary btn-block">Reindex Policies</a>
                 <a href="/api/fulltext/reindex/all" class="btn btn-primary btn-block">Reindex All</a>
               </div>
             </div>
@@ -719,6 +720,12 @@
             <div class="card">
               <input type="submit" value="Save" class="btn-primary btn-save">
               <div class="card-body row mt-6 mb-4">
+                <div class="col-12">
+                  <select class="form-control" name="system_policy_domain_source">
+                    <option value='bondexchange'>Bond Exchange</option>
+                    <option value='jet'>JET</option>
+                  </select>
+                </div>
                 <div class="col-6">
                   <label class="form-label">System Default Policy Agent</label>
                   <select class="form-control" name="system_policy_default_agent">
@@ -749,5 +756,5 @@
     </div>
   </form>
   <script src="https://cdn.tiny.cloud/1/sciq4hgol5faritl7pux7z8gazeni4fj5bkebpkgbkueunhk/tinymce/5/tinymce.min.js"></script>
-  <script src="/admin_resources/admin/js/settings_site.js"></script>
+  <script src="/modules/System/Resources/Admin/js/settings_site.js"></script>
 @endcan
