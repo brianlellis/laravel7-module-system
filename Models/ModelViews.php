@@ -5,9 +5,10 @@ namespace Rapyd\Model;
 use Illuminate\Database\Eloquent\Model;
 
 class ModelViews extends Model {
-  protected $table    = 'model_views';
-  protected $guarded  = [];
-  public $timestamps  = false;
+  protected $connection = 'service_users';
+  protected $table      = 'model_views';
+  protected $guarded    = [];
+  public $timestamps    = false;
 
   public static function get_top_viewed($model,$limit = 10)
   {
