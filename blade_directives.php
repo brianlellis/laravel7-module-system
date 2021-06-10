@@ -351,6 +351,16 @@ Blade::directive('end_dashboard_table', function ($expression) {
     return $dom;
 });
 
+Blade::directive('url', function ($expression) {
+  $str    = preg_replace('/[\'"]/', '', $expression);
+  $first  = substr($str, 0,1);
+  if ($first == '/') {
+    $str  = substr($str, 1);
+  }
+  $host   = request()->getSchemeAndHttpHost().'/'.$str;
+  return $host;
+});
+
 
 // ------------ ACCOUNTING PAGE SPECIFIC
 // DOM SNIPPETS

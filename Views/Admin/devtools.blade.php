@@ -23,7 +23,7 @@
         <div class="col-sm-8">
           <h2>INSTRUCTIONS</h2>
           <p>
-            To get a shareable widget code select a version of a widget and copy the code below. For additional dev tools see <a href="/admin/devtools">HERE</a>
+            To get a shareable widget code select a version of a widget and copy the code below. For additional dev tools see <a href="@url('admin/devtools')">HERE</a>
           </p>
           <button class="widget_version_select btn btn-primary" data-idx="0">Version 1</button>
           <button class="widget_version_select btn btn-primary" data-idx="1">Version 2</button>

@@ -20,7 +20,7 @@
         </div>
 
         <div class="form-group" style="margin-top: 20px">
-          <a href="/admin/redirectors/dashboard" class="btn btn-danger" type="submit">Cancel</a>
+          <a href="@url('admin/redirectors/dashboard')" class="btn btn-danger" type="submit">Cancel</a>
           <button class="btn btn-success">Create</button>
         </div>
       </form>

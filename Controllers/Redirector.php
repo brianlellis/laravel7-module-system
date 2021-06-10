@@ -31,7 +31,7 @@ class RapydRedirector
 
           $route->save();
 
-          return redirect('/admin/redirectors/dashboard')->with('success','Redirect route successfully created');
+          return redirect(request()->getSchemeAndHttpHost().'/admin/redirectors/dashboard')->with('success','Redirect route successfully created');
         }
     }
 

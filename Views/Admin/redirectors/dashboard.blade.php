@@ -37,7 +37,7 @@
           </td>
           <td style="width:10%">
             <button class="btn btn-sm btn-primrary">Update</button>
-            <a href="/api/redirectors/delete/{{$route->id}}" title="History" class="btn btn-sm btn-danger">Remove</a>
+            <a href="@url('/api/redirectors/delete/'){{$route->id}}" title="History" class="btn btn-sm btn-danger">Remove</a>
           </td>
         </form>
       </tr>

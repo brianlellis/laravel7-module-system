@@ -110,7 +110,7 @@
                         <div class="form-label">Producer Agreement</div>
                         <div class="custom-file">
                           @if($settings['sitewide_producer_agreement'])
-                            <a target="_blank" href="/{{$settings['sitewide_producer_agreement']}}">Download Agreement</a>
+                            <a target="_blank" href="@url('/'){{$settings['sitewide_producer_agreement']}}">Download Agreement</a>
                           @endif
                           <input type="hidden" name="old_sitewide_producer_agreement" value="{{$settings['sitewide_producer_agreement']}}" />
                           <input type="file" class="form-control" name="sitewide_producer_agreement">
@@ -299,7 +299,7 @@
                 <h3 class="mb-0 card-title">Sitemap</h3>
               </div>
               <div class="card-body">
-                <a href="/api/core-sitemap/build" class="btn btn-primary btn-block">Create Sitemap</a>
+                <a href="@url('api/core-sitemap/build')" class="btn btn-primary btn-block">Create Sitemap</a>
                 <a href="/storage/main-sitemap.xml" class="btn btn-primary btn-block" download>Download
                   Sitemap</a>
               </div>
@@ -311,14 +311,14 @@
                 <h3 class="mb-0 card-title">DB Indexing</h3>
               </div>
               <div class="card-body">
-                <a href="/api/fulltext/reindex/class/users" class="btn btn-primary btn-block">Reindex Users</a>
-                <a href="/api/fulltext/reindex/class/usergroups" class="btn btn-primary btn-block">Reindex Usergroups</a>
-                <a href="/api/fulltext/reindex/class/bonds" class="btn btn-primary btn-block">Reindex Bonds</a>
-                <a href="/api/fulltext/reindex/class/cmspages" class="btn btn-primary btn-block">Reindex Cms Pages</a>
-                <a href="/api/fulltext/reindex/class/cmsblog" class="btn btn-primary btn-block">Reindex Cms Blog</a>
-                <a href="/api/fulltext/reindex/class/obligees" class="btn btn-primary btn-block">Reindex Obligee</a>
-                <a href="/api/fulltext/reindex/class/policies" class="btn btn-primary btn-block">Reindex Policies</a>
-                <a href="/api/fulltext/reindex/all" class="btn btn-primary btn-block">Reindex All</a>
+                <a href="@url('api/fulltext/reindex/class/users')" class="btn btn-primary btn-block">Reindex Users</a>
+                <a href="@url('api/fulltext/reindex/class/usergroups')" class="btn btn-primary btn-block">Reindex Usergroups</a>
+                <a href="@url('api/fulltext/reindex/class/bonds')" class="btn btn-primary btn-block">Reindex Bonds</a>
+                <a href="@url('api/fulltext/reindex/class/cmspages')" class="btn btn-primary btn-block">Reindex Cms Pages</a>
+                <a href="@url('api/fulltext/reindex/class/cmsblog')" class="btn btn-primary btn-block">Reindex Cms Blog</a>
+                <a href="@url('api/fulltext/reindex/class/obligees')" class="btn btn-primary btn-block">Reindex Obligee</a>
+                <a href="@url('api/fulltext/reindex/class/policies')" class="btn btn-primary btn-block">Reindex Policies</a>
+                <a href="@url('api/fulltext/reindex/all')" class="btn btn-primary btn-block">Reindex All</a>
               </div>
             </div>
           </div>
@@ -741,7 +741,7 @@
                 <div class="col-6">
                   <label class="form-label">Default User Group</label>
                   @if($default_group = \m_Usergroups::find($settings['system_policy_default_usergroup']))
-                    <a target="_blank" href="/admin/usergroups/profile?group={{$default_group->id}}">
+                    <a target="_blank" href="@url('/admin/usergroups/profile?group='){{$default_group->id}}">
                       {{$default_group->name}}
                     </a>
                   @else

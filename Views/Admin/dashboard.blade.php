@@ -39,7 +39,7 @@
           <div class="card-body">
 
             {{-- New Quote --}}
-            <a href="/bondquote" class="card text-success" id="new_bond_quote">
+            <a href="@url('bondquote')" class="card text-success" id="new_bond_quote">
               <p>New Quote</p>
               <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-prefix="fas"
                 data-icon="file-invoice-dollar" class="svg-inline--fa fa-file-invoice-dollar fa-w-12" role="img"
@@ -49,7 +49,7 @@
               </svg>
             </a>
             {{-- Quote / Bond History --}}
-            <a href="/admin/usergroups/profile?group={{auth()->user()->usergroup()->first()->id}}&tab=Policies" class="card" id="bond_quote_history">
+            <a href="@url('/admin/usergroups/profile?group='){{auth()->user()->usergroup()->first()->id}}&tab=Policies" class="card" id="bond_quote_history">
               <p>Agency Policy <br> History</p>
               <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-prefix="fas"
                 data-icon="history" class="svg-inline--fa fa-history fa-w-16" role="img" viewBox="0 0 512 512">
@@ -58,7 +58,7 @@
               </svg>
             </a>
             {{-- Profile --}}
-            <a href="/admin/user/profile" class="card text-info" id="goto_agent_profile">
+            <a href="@url('admin/user/profile')" class="card text-info" id="goto_agent_profile">
               <p>Edit Your <br> Profile</p>
               <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-prefix="fas"
                 data-icon="id-card" class="svg-inline--fa fa-id-card fa-w-18" role="img" viewBox="0 0 576 512">
