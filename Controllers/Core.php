@@ -115,7 +115,7 @@ class Core
         'agent-contact',
         request('agent_email'),
         request('agent_name'),
-        ['event_mail_subject' => 'User Contact'],
+        ['event_mail_subject' => \SettingsSite::get('sitewide_title').' User Contact'],
         [
             'recipient_to_email' => request('agent_email'),
             'message' => request('message'),
