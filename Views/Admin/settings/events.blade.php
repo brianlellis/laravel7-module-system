@@ -1,6 +1,7 @@
 @php
   $event_cats = RapydEvents::get_event_cats();
   $events     = RapydEvents::get_events();
+  $templates  = \m_RapydMailTemplates::select('*')->get();
 @endphp
 
 <h3 style="text-align: center">
@@ -20,19 +21,24 @@
     </div>
 
     <div class="card-body">
-      @dashboard_table('event_id , Mail Parent, Mail Template,To_Email, To_Name, Actions,')
+      @dashboard_table('event_id , Email_Template,To_Email(S), Actions,')
         @foreach($events as $event)
           @if($event->group_label === $category->group_label)
             <tr>
               <form method="POST" action="{{route('rapyd.events.update')}}">
                 <input name="event_id" value="{{$event->id}}" type="hidden">
                 @csrf
-                <td>{{$event->id}}</td>
-                <td><input name="mail_temp_parent" value="{{$event->mail_temp_parent}}"></td>
-                <td><input name="mail_temp_name" value="{{$event->mail_temp_name}}"></td>
-                <td><input name="to_email" value="{{$event->to_email}}"></td>
-                <td><input name="to_name" value="{{$event->to_name}}"></td>
-                <td><button type="submit" class="btn-primary btn btn-sm">Update</button></td>
+                <td style="width: 25%">{{$event->id}}</td>
+                <td style="width: 20%">
+                  <select class="form-control" name="email_template">
+                    <option value>Select Email Template</option>
+                    @foreach($templates as $design)
+                      <option value="{{$design->json}}" data-uid="{{$design->id}}">{{$design->name}}</option>
+                    @endforeach
+                  </select>
+                </td>
+                <td style="width: 40%"><input class="form-control" name="to_email" value="{{$event->to_email}}"></td>
+                <td style="width: 15%"><button type="submit" class="btn-primary btn btn-sm">Update</button></td>
               </form>
             </tr>
           @endif

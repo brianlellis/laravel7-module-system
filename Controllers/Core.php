@@ -433,6 +433,38 @@ class Core
     }
   }
 
+  public static function get_group_class_methods($class_arr) {
+    $methods  = [];
+    foreach($class_arr as $outer) {
+      $methods[$outer] = self::get_class_methods($outer);
+    }
+    return $methods;
+  }
+
+  public static function get_class_methods($passed_class)
+  {
+    $ignore = [
+      "bootIndexable",
+      "getIndexContent",
+      "getIndexTitle",
+      "indexedRecord",
+      "indexRecord",
+      "unIndexRecord",
+      "getIndexDataFromColumns",
+      "indexDataIsRelation",
+      "getIndexValueFromRelation"
+    ];
+
+    $f        = new \ReflectionClass($passed_class);
+    $methods  = [];
+    foreach ($f->getMethods() as $m) {
+      if ($m->class == $passed_class && !in_array($m->name, $ignore)) {
+        $methods[] = $m->name;
+      }
+    }
+    return $methods;
+  }
+
   /**
    *
    * UTILITY BENCHMARKING FUNCTIONS
