@@ -49,7 +49,7 @@ class SettingsSite
       } elseif(isset($data['old_'.$key])) {
         $data[$key] = $data['old_'.$key];
       } elseif ($key === 'ecommerce_sandbox_mode') {
-        if ($data[$key] === 'on') {
+        if (isset($data[$key])) {
           $data[$key] = 1;
         } else {
           $data[$key] = 0;

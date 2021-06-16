@@ -688,7 +688,7 @@
                   <div class="form-group">
                     <label class="custom-switch">
                       <input type="checkbox" name="ecommerce_sandbox_mode" class="custom-switch-input"
-                        @if($settings['ecommerce_sandbox_mode'] ?? false) checked @endif
+                        @if($settings['ecommerce_sandbox_mode']) checked @endif
                       >
                       <span class="custom-switch-indicator"></span>
                       <span class="custom-switch-description">
