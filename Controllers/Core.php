@@ -15,7 +15,11 @@ class Core
     if (is_array($str)) {
       $str_arr = array_map(
         function ($val) {
-          $new_str = strtolower(trim(preg_replace('/[^A-Za-z0-9-\'\;\&\%\$\#\@\,\(\)\{\}\[\]\~]+/', '-', $val), '-'));
+          $new_str = strtolower(
+            trim(
+              preg_replace('/[^A-Za-z0-9]+/', '-', $val)
+            , '-')
+          );
           $new_str = str_replace('---', '-', $new_str);
           return $$new_str;
         },
@@ -24,7 +28,7 @@ class Core
 
       return join("", $str_arr);
     } else {
-      $new_str = strtolower(trim(preg_replace('/[^A-Za-z0-9-\'\;\&\%\$\#\@\,\(\)\{\}\[\]\~]+/', '-', $str), '-'));
+      $new_str = strtolower(trim(preg_replace('/[^A-Za-z0-9]+/', '-', $str), '-'));
       return str_replace('---', '-', $new_str);
     }
   }
