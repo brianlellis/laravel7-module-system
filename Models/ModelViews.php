@@ -18,7 +18,7 @@ class ModelViews extends Model {
 
     $data_arr = [];
     foreach ($records as $record) {
-      $value = $model::find($record->model_id);
+      $value = '\\'.$model::find($record->model_id);
 
       if ($app == 'suretypedia') {
         if (
@@ -27,6 +27,8 @@ class ModelViews extends Model {
         ) {
           $data_arr[] = $value;
         }
+      } else {
+        $data_arr[] = $value;
       }
       if (count($data_arr) == $limit) {
         break;
