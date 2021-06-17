@@ -10,15 +10,27 @@ class ModelViews extends Model {
   protected $guarded    = [];
   public $timestamps    = false;
 
-  public static function get_top_viewed($model,$limit = 10)
+  public static function get_top_viewed($model,$limit = 10, $app=false)
   {
     $records  = self::where('model',$model)
                   ->orderBy('view_count','DESC')
-                  ->limit($limit)->get();
+                  ->limit($limit * 3)->get();
 
     $data_arr = [];
     foreach ($records as $record) {
-      $data_arr[] = $model::find($record->model_id);
+      $value = $model::find($record->model_id);
+
+      if ($app == 'suretypedia') {
+        if (
+          !$value->obligee->name != 'No Obligee' &&
+          !$value->obligee->name != 'Generic Obligee'
+        ) {
+          $data_arr[] = $value;
+        }
+      }
+      if (count($data_arr) == $limit) {
+        break;
+      }
     }
     return $data_arr;
   }
