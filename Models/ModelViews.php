@@ -22,8 +22,8 @@ class ModelViews extends Model {
 
       if ($app == 'suretypedia') {
         if (
-          $value->obligee->name != 'No Obligee' &&
-          $value->obligee->name != 'Generic Obligee'
+          stripos($value->obligee->name,'No Obligee') === false &&
+          stripos($value->obligee->name, 'Generic Obligee') === false
         ) {
           $data_arr[] = $value;
         }
