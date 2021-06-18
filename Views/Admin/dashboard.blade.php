@@ -74,7 +74,7 @@
         var tour = [
             {
                 element: '#navbar_right_dropdown',
-                title: 'Welcome to BondExchange',
+                title: 'Welcome to {{\SettingsSite::get('sitewide_title')}}',
                 description: `To make your user experience as seamless as possible we have put together a quick site tour. At any time you can exit these tours while still having access to them if ever you need some help.
                   <br><br>
                   To navigate the tour you can use your keyboard arrow keys or click the arrows on your screen.`
