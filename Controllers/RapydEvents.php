@@ -65,7 +65,6 @@ class RapydEvents {
             ['id' => $event_name],
             [
               'group_label'      => $event_data['group_label'] ?? $event_parent,
-              'mail_temp_parent' => $event_data['mail_temp_parent'] ?? '',
               'mail_temp_name'   => $event_data['mail_temp_name'] ?? '',
               'to_email'         => $event_data['to_email'] ?? '',
               'to_name'          => $event_data['to_name'] ?? ''
@@ -109,30 +108,13 @@ class RapydEvents {
     }
   }
 
-  public static function send_mail($event_id, $system_process = false, $passed_data = false)
-  {
-    $mail_template = Events::find($event_id);
+  public static function send_mail($event_id, $passed_data=null) {
+    $rapyd_event  = \DB::table('rapyd_events')->where('id',$event_id)->first();
 
-    if($mail_template->mail_temp_parent && $mail_template->mail_temp_name) {
-      if($system_process === 'sitewide_notification_emails' || $system_process === 'sitewide_contact_form') {
-        \RapydMail::build_system_email_template(
-          $mail_template->mail_temp_parent,
-          $mail_template->mail_temp_name,
-          $passed_data,
-          $passed_data === 'sitewide_contact_form' ? true : false
-        );
-      } else {
-        if($passed_data && !isset($passed_data['recipient_to_email']) && !isset($passed_data->id)) {
-          $passed_data = User::find($passed_data);
-        }
-
-        \RapydMail::build_email_template(
-          $mail_template->mail_temp_parent,
-          $mail_template->mail_temp_name,
-          $mail_template->to_email ? $mail_template->to_email : false,
-          $mail_template->to_name ? $mail_template->to_name : false,
-          $passed_data
-        );
+    if ($rapyd_event->mail_temp_name) {
+      \RapydMail::build_system_email_template($rapyd_event,$passed_data);
+      if($rapyd_event->mail_temp_to_user_name) {
+        \RapydMail::build_email_template($rapyd_event,$passed_data);
       }
     }
   }
@@ -153,13 +135,8 @@ class RapydEvents {
 
   public static function update_event(Request $request)
   {
-    Events::find($request->event_id)->update([
-      'mail_temp_parent' => $request->mail_temp_parent,
-      'mail_temp_name'   => $request->mail_temp_name,
-      'to_email'         => $request->to_email,
-      'to_name'          => $request->to_name
-    ]);
-
+    $data = $request->except('_token','event_id');
+    Events::find($request->event_id)->update($data);
     return back()->with('success', 'Event succesfully updated');
   }
 

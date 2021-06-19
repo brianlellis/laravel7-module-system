@@ -17,4 +17,5 @@ return [
 
   //---------- MODELS
   'm_ModelViews'        => Rapyd\Model\ModelViews::class,
+  'm_RapydEvents'       => Rapyd\Model\Events::class
 ];

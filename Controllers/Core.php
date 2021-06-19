@@ -108,7 +108,8 @@ class Core
 
   public static function send_contact_form()
   {
-    \RapydEvents::send_mail('sitewide_contact_form', 'sitewide_contact_form', ['message' => request('message'), 'user' => request('email')]);
+    $data = request()->except('_token'); // message & email
+    \RapydEvents::send_mail('sitewide_contact_form', $data);
     return back();
   }
 

@@ -21,24 +21,46 @@
     </div>
 
     <div class="card-body">
-      @dashboard_table('event_id , Email_Template,To_Email(S), Actions,')
+      @dashboard_table('event_id , Sys_Email_Template,To_User_Template, Sys_To_Email(S), Actions,')
         @foreach($events as $event)
           @if($event->group_label === $category->group_label)
             <tr>
               <form method="POST" action="{{route('rapyd.events.update')}}">
                 <input name="event_id" value="{{$event->id}}" type="hidden">
                 @csrf
-                <td style="width: 25%">{{$event->id}}</td>
+                <td style="width: 20%">{{$event->id}}</td>
                 <td style="width: 20%">
-                  <select class="form-control" name="email_template">
+                  <select class="form-control" name="mail_temp_name">
                     <option value>Select Email Template</option>
                     @foreach($templates as $design)
-                      <option value="{{$design->json}}" data-uid="{{$design->id}}">{{$design->name}}</option>
+                      <option 
+                        value="{{$design->name}}"
+                        @if($design->name == $event->mail_temp_name)
+                          selected
+                        @endif
+                      >
+                        {{$design->name}}
+                      </option>
                     @endforeach
                   </select>
                 </td>
-                <td style="width: 40%"><input class="form-control" name="to_email" value="{{$event->to_email}}"></td>
-                <td style="width: 15%"><button type="submit" class="btn-primary btn btn-sm">Update</button></td>
+                <td style="width: 20%">
+                  <select class="form-control" name="mail_temp_to_user_name">
+                    <option value>Select Email Template</option>
+                    @foreach($templates as $design)
+                      <option 
+                        value="{{$design->name}}"
+                        @if($design->name == $event->mail_temp_to_user_name)
+                          selected
+                        @endif
+                      >
+                        {{$design->name}}
+                      </option>
+                    @endforeach
+                  </select>
+                </td>
+                <td style="width: 35%"><input class="form-control" name="to_email" value="{{$event->to_email}}"></td>
+                <td style="width: 5%"><button type="submit" class="btn-primary btn btn-sm">Update</button></td>
               </form>
             </tr>
           @endif

@@ -37,7 +37,6 @@ class Email extends Command
     $db_cols = [
       'id',
       'mail_temp_name',
-      'mail_temp_parent',
       'group_label'
     ];
     $db_val = json_decode(json_encode(\DB::table('rapyd_events')->get($db_cols)),true);
