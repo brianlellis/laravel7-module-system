@@ -30,7 +30,6 @@ Route::prefix('/api/core-sitemap/')
 Route::post('/api/systemMenu/save', '\Rapyd\Core\Menu@save');
 
 // EVENTS
-Route::post('/api/system/event/theme', '\Rapyd\RapydEvents@eval_theme_event')->name('system.events.theme');
 Route::post('/api/system/event/update', '\Rapyd\RapydEvents@update_event')->name('rapyd.events.update');
 Route::get('/api/system/event/persist/files', '\Rapyd\RapydEvents@persist_events')->name('rapyd.events.persist.files');
 

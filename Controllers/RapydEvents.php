@@ -139,23 +139,4 @@ class RapydEvents {
     Events::find($request->event_id)->update($data);
     return back()->with('success', 'Event succesfully updated');
   }
-
-  /*
-   * THIS ALLOWS A THEME EVENT TO REGISTER AND APPLY THE MAIL EVENT
-   */
-  public static function eval_theme_event(Request $request)
-  {
-    $data_to_pass = $request->except(['_token', 'system_event_id', 'event_success_message']);
-
-    self::send_mail(
-      $request->system_event_id,
-      'sitewide_notification_emails',
-      $data_to_pass
-    );
-
-    if (isset($request->event_success_message)) {
-      return back()->with('success', $request->event_success_message);
-    }
-    return back();
-  }
 }
