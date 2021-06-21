@@ -111,9 +111,9 @@ class RapydEvents {
   public static function send_mail($event_id, $passed_data=null) {
     $rapyd_event  = \DB::table('rapyd_events')->where('id',$event_id)->first();
 
-    if ($rapyd_event->mail_temp_name) {
+    if ($rapyd_event->mail_temp_name ?? false) {
       \RapydMail::build_system_email_template($rapyd_event,$passed_data);
-      if($rapyd_event->mail_temp_to_user_name) {
+      if($rapyd_event->mail_temp_to_user_name ?? false) {
         \RapydMail::build_email_template($rapyd_event,$passed_data);
       }
     }
