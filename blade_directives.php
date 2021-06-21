@@ -357,7 +357,7 @@ Blade::directive('url', function ($expression) {
   if ($first == '/') {
     $str  = substr($str, 1);
   }
-  $host   = request()->getSchemeAndHttpHost().'/'.$str;
+  $host   = config('app.url').'/'.$str;
   return $host;
 });
 
