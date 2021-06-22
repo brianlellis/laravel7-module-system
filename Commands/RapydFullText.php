@@ -37,9 +37,10 @@ class RapydFullText extends Command
      */
     public function handle()
     {
+      ini_set('memory_limit',-1);
       if ($this->option('action') == 'indexall') {
         $this->info('Beginning to reindex all full text models');
-        \FullText::reindex_all();
+        \FullText::reindex_all(true);
         $this->info('Successfully reindexed all full text models');
       }
     }
