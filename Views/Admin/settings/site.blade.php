@@ -306,6 +306,12 @@
             </div>
 
             {{-- REINDEXING DB --}}
+            {{--
+             * CMS content was removed from full text search as
+             * they are specific to the ap and the full text database
+             * is currently being shared across apps to attempt
+             * to manage I/O resources across services
+            --}}
             <div class="card">
               <div class="card-header">
                 <h3 class="mb-0 card-title">DB Indexing</h3>
@@ -314,8 +320,10 @@
                 <a href="@url('api/fulltext/reindex/class/users')" class="btn btn-primary btn-block">Reindex Users</a>
                 <a href="@url('api/fulltext/reindex/class/usergroups')" class="btn btn-primary btn-block">Reindex Usergroups</a>
                 <a href="@url('api/fulltext/reindex/class/bonds')" class="btn btn-primary btn-block">Reindex Bonds</a>
+                {{--
                 <a href="@url('api/fulltext/reindex/class/cmspages')" class="btn btn-primary btn-block">Reindex Cms Pages</a>
                 <a href="@url('api/fulltext/reindex/class/cmsblog')" class="btn btn-primary btn-block">Reindex Cms Blog</a>
+                --}}
                 <a href="@url('api/fulltext/reindex/class/obligees')" class="btn btn-primary btn-block">Reindex Obligee</a>
                 <a href="@url('api/fulltext/reindex/class/policies')" class="btn btn-primary btn-block">Reindex Policies</a>
                 <a href="@url('api/fulltext/reindex/all')" class="btn btn-primary btn-block">Reindex All</a>
