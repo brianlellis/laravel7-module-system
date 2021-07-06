@@ -112,14 +112,26 @@ class RapydEvents {
     $rapyd_event  = \DB::table('rapyd_events')->where('id',$event_id)->first();
 
     // EITHER OR SITUATION. COULD BE CODE CLEANER BUT TIME CONSTRAINT AT THIS TIME.
-    if ($rapyd_event->mail_temp_name ?? false) {
+    if (
+      isset($rapyd_event->mail_temp_name) &&
+      $rapyd_event->mail_temp_name
+    ) {
       \RapydMail::build_system_email_template($rapyd_event,$passed_data,$has_attachment);
-      if($rapyd_event->mail_temp_to_user_name ?? false) {
+      if(
+        isset($rapyd_event->mail_temp_to_user_name) &&
+        $rapyd_event->mail_temp_to_user_name
+      ) {
         \RapydMail::build_email_template($rapyd_event,$passed_data,$has_attachment);
       }
-    } elseif ($rapyd_event->mail_temp_to_user_name ?? false) {
+    } elseif (
+      isset($rapyd_event->mail_temp_to_user_name) &&
+      $rapyd_event->mail_temp_to_user_name
+    ) {
       \RapydMail::build_email_template($rapyd_event,$passed_data,$has_attachment);
-      if($rapyd_event->mail_temp_name ?? false) {
+      if(
+        isset($rapyd_event->mail_temp_name) &&
+        $rapyd_event->mail_temp_name
+      ) {
         \RapydMail::build_system_email_template($rapyd_event,$passed_data,$has_attachment);
       }
     }
