@@ -300,8 +300,6 @@
               </div>
               <div class="card-body">
                 <a href="@url('api/core-sitemap/build')" class="btn btn-primary btn-block">Create Sitemap</a>
-                <a href="/storage/main-sitemap.xml" class="btn btn-primary btn-block" download>Download
-                  Sitemap</a>
               </div>
             </div>
 

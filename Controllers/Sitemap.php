@@ -104,39 +104,8 @@ EOT;
   public static function createSitemap()
   {
     $sitemap_content = self::settingsParser();
-    \Storage::put('public/main-sitemap.xml', $sitemap_content);
-    return back()->with('success', 'Sitemap Build Succesful');
-  }
-
-  // Validate and create module array
-  public function make_module()
-  {
-    $data = request()->validate([
-      'path_prefix'   => 'nullable',
-      'table_lookup'  => 'required',
-      'column_lookup' => 'required'
-    ]);
-
-    return $data;
-  }
-
-  // Create Module
-  public function store()
-  {
-    SitemapSettings::create($this->make_module());
-    return back();
-  }
-
-  // Update Module
-  public function update($id)
-  {
-    SitemapSettings::find($id)->update($this->make_module());
-    return back();
-  }
-
-  public function destroy($id)
-  {
-    SitemapSettings::find($id)->delete();
-    return back();
+    return response()->streamDownload(function() use ($sitemap_content) {
+      echo $sitemap_content;
+    }, 'main-sitemap.xml');
   }
 }
