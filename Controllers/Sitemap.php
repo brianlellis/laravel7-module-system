@@ -104,7 +104,7 @@ EOT;
   public static function createSitemap()
   {
     $sitemap_content = self::settingsParser();
-    $put_file = Storage::disk('local')->put('public/main-sitemap.xml', $sitemap_content);
+    \Storage::put('public/main-sitemap.xml', $sitemap_content);
     return back()->with('success', 'Sitemap Build Succesful');
   }
 
