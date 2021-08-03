@@ -1,6 +1,5 @@
 @php
   $user = RapydUser::show(auth()->user()->id);
-  $avatar_path = $user->avatar ? $user->avatar : SettingsSite::get('default_user_avatar');
 @endphp
 
 <div class="card">
