@@ -50,11 +50,6 @@ class SystemServiceProvider extends ServiceProvider
     $this->loadViewsFrom(glob($app_root.'/resources/Mailer'), 'theme_mailer');
 
     /**
-     * CUSTOM BLADE DIRECTIVES
-    **/
-    include($app_root . '/app/Rapyd/blade_directives.php');
-
-    /**
      * LOAD CONTROLLERS AND HELPERS
     **/
     self::getSystemControllers($app_root);
