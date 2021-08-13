@@ -8,16 +8,6 @@ class Database
   {
     $app_root = base_path();
 
-    // THIS IS FOR ARCHIVING OF DATA FROM SYSTEM
-    $sys_archive = $app_root.'/app/Rapyd/archive_db.php';
-    if (file_exists($sys_archive)) {
-      $db_archive = include($sys_archive);
-
-      if ($db_archive['is_active']) {
-        $sys_db_config['connections']['archive_db'] = $db_archive['details'];
-      }
-    }
-
     // COLLECT MODULES USING DaaS (Database as a Service)
     $module_folders = array_map(function ($dir) {
       return basename($dir);
