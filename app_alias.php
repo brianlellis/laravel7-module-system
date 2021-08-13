@@ -12,6 +12,7 @@ return [
   'RapydEvents'         => Rapyd\RapydEvents::class,
   'RapydRedirector'     => Rapyd\RapydRedirector::class,
   'RapydWidgets'        => Rapyd\Widgets::class,
+  'RapydDatabase'       => Rapyd\System\Database::class,
   'SettingsSite'        => Rapyd\SettingsSite::class,
   'ui_AdminDashboard'   => Rapyd\UI\AdminDashboards::class,
 
