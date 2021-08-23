@@ -137,6 +137,12 @@ class RapydERDBuilder extends Command
             $graph->setNode($legend_node);
         }
 
+        // CHECK FOR DIRECTORY EXISTENCE
+        $dir = base_path().'/ERD_MAPS';
+        if (!\File::isDirectory($dir)) {
+          \File::makeDirectory($dir, 0755, true);
+        }
+
         $graph->export(
             $this->option('format'), 
             $filename,

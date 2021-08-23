@@ -481,6 +481,11 @@ class Core
     // CACHE STORAGE TIME
     $cache_storage_time = now()->addMinutes(20);
 
+    // if endpoint fn_name already present then reset values
+    if ( $endpoint === 'start' && \Cache::has('core_fn'.$fn_name.'_start_time') ) {
+      \Cache::forget('core_fn'.$fn_name.'_start_time');
+    }
+
     // STARTING POINT
     if ($endpoint === 'start') {
       $start_time      = self::convert_microtime($time_format);
