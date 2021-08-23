@@ -110,28 +110,34 @@ class RapydEvents {
 
   public static function send_mail($event_id, $passed_data=null,$has_attachment=null) {
     $rapyd_event  = \DB::table('rapyd_events')->where('id',$event_id)->first();
+  
+    // FAIL POINT
+    if (
+      !($rapyd_event->mail_temp_name ?? false) &&
+      !($rapyd_event->mail_temp_to_user_name ?? false)
+    ) {
+      return 'No Event Template Present'; // No event templates present at all
+    }
+
+    // IF A SYSTEM EVENT IS PASSED USE THE MODEL ID TO
+    // CREATE THE STARTING POINT FOR THE DATA PASSAGE
+    if (isset($passed_data['event_group_model_id'])) {
+      $passed_data   = array_merge($passed_data, \Rapyd\RapydEventEmailModel::sanitized_models(
+                        $rapyd_event->group_label,
+                        $passed_data['event_group_model_id']
+                      ));
+    }
+
 
     // EITHER OR SITUATION. COULD BE CODE CLEANER BUT TIME CONSTRAINT AT THIS TIME.
-    if (
-      isset($rapyd_event->mail_temp_name) &&
-      $rapyd_event->mail_temp_name
-    ) {
+    if ($rapyd_event->mail_temp_name ?? false) {
       \RapydMail::build_system_email_template($rapyd_event,$passed_data,$has_attachment);
-      if(
-        isset($rapyd_event->mail_temp_to_user_name) &&
-        $rapyd_event->mail_temp_to_user_name
-      ) {
+      if($rapyd_event->mail_temp_to_user_name ?? false) {
         \RapydMail::build_email_template($rapyd_event,$passed_data,$has_attachment);
       }
-    } elseif (
-      isset($rapyd_event->mail_temp_to_user_name) &&
-      $rapyd_event->mail_temp_to_user_name
-    ) {
+    } elseif ($rapyd_event->mail_temp_to_user_name ?? false) {
       \RapydMail::build_email_template($rapyd_event,$passed_data,$has_attachment);
-      if(
-        isset($rapyd_event->mail_temp_name) &&
-        $rapyd_event->mail_temp_name
-      ) {
+      if($rapyd_event->mail_temp_name ?? false) {
         \RapydMail::build_system_email_template($rapyd_event,$passed_data,$has_attachment);
       }
     }
