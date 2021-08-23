@@ -1,4 +1,5 @@
 @php
+  use Rapyd\RapydEventEmailModel;
   $event_cats = RapydEvents::get_event_cats();
   $events     = RapydEvents::get_events();
   $templates  = \m_RapydMailTemplates::select('*')->get();
@@ -21,7 +22,7 @@
     </div>
 
     <div class="card-body">
-      @dashboard_table('event_id , Sys_Email_Template,To_User_Template, Sys_To_Email(S), Actions,')
+      @dashboard_table('event_id , Sys_Email_Template,To_User_Template, Sys_To_Email(S), Systemwide_Send, Actions,')
         @foreach($events as $event)
           @if($event->group_label === $category->group_label)
             <tr>
@@ -33,7 +34,7 @@
                   <select class="form-control" name="mail_temp_name">
                     <option value>Select Email Template</option>
                     @foreach($templates as $design)
-                      <option 
+                      <option
                         value="{{$design->name}}"
                         @if($design->name == $event->mail_temp_name)
                           selected
@@ -48,9 +49,9 @@
                   <select class="form-control" name="mail_temp_to_user_name">
                     <option value>Select Email Template</option>
                     @foreach($templates as $design)
-                      <option 
+                      <option
                         value="{{$design->name}}"
-                        @if($design->name == $event->mail_temp_to_user_name)
+                        @if(isset($event->mail_temp_to_user_name) && $design->name == $event->mail_temp_to_user_name)
                           selected
                         @endif
                       >
@@ -59,8 +60,20 @@
                     @endforeach
                   </select>
                 </td>
-                <td style="width: 35%"><input class="form-control" name="to_email" value="{{$event->to_email}}"></td>
-                <td style="width: 5%"><button type="submit" class="btn-primary btn btn-sm">Update</button></td>
+                <td style="width: 20%">
+                  <input class="form-control" name="to_email" value="{{$event->to_email}}">
+                </td>
+                <td style="width: 5%">
+                  <div class="form-group mt-4 ml-5">
+                    <label class="custom-switch"> 
+                      <input type="hidden" value="0" name="systemwide_send">
+                      <input type="checkbox" name="systemwide_send" class="custom-switch-input" value="1"
+                        @if($event->systemwide_send === 1) checked @endif>
+                      <span class="custom-switch-indicator"></span>
+                    </label> 
+                  </div>
+                </td>
+                <td style="width: 10%"><button type="submit" class="btn-primary btn btn-sm">Update</button></td>
               </form>
             </tr>
           @endif
@@ -69,3 +82,4 @@
     </div>
   </div>
 @endforeach
+

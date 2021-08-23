@@ -1,7 +1,13 @@
 @php
   if (auth()->user()->hasrole('Agent')) {
     $tour_check           = \Rapyd\Tours::first_visit();
-    $incomplete_usergroup = auth()->user()->usergroup()->where('producer_agreement_ip', null)->first();
+
+    if(auth()->user()->usergroup()->producer_agreement_ip === null) {
+      $incomplete_usergroup = auth()->user()->usergroup();
+    } else {
+      $incomplete_usergroup = false;
+    }
+  
   } elseif (auth()->user()->hasanyrole('Underwriter|Developer')) {
     $start_date           = request()->get('start_date');
     $transactions         = \PolicyReports::get_issued_info($start_date);

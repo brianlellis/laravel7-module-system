@@ -3,11 +3,12 @@
 namespace App\Rapyd\Modules\System\Commands\Tests;
 
 use Carbon\Carbon;
+use Faker\Factory;
 use Illuminate\Console\Command;
-
+use Rapyd\RapydEventEmailModel;
 class Email extends Command
 {
-  protected $signature   = 'rapyd:test:email {--action=list}';
+  protected $signature   = 'rapyd:test:email {--action=list} {--event=}';
   protected $description = 'Testing Harness For Email Sending Events';
   protected static $exempt_mails = [
     'parent' => ['generic-application']
@@ -26,7 +27,7 @@ class Email extends Command
       $templates = self::theme_emails(true);
       $this->table(['Parent','Template'],$templates);
     } elseif($this->option('action') == 'send') {
-      self::send_system_email();
+      self::send_system_email($this->option(('event')));
     }
   }
 
@@ -43,26 +44,32 @@ class Email extends Command
     $this->table($db_cols,$db_val);
   }
 
-  protected function send_system_email() 
+  protected function send_system_email($event_name = null)
   {
-    $is_contact_form  = false;
-    $has_attachment   = false;
-    $mailers          = self::theme_emails();
+    $has_attachment = false;
+    $events_query = \DB::table('rapyd_events')
+                        ->where('mail_temp_name', '!=', '')
+                        ->whereNotNull('mail_temp_name');
+
+    if ($event_name) {
+      $events_query->where('id', $event_name);
+    }
+    $events = $events_query->get();
     $blade_data       = self::format_data();
-    $mailer_count     = count($mailers);
-    $progress_bar     = $this->output->createProgressBar($mailer_count);
-    $this->info("\nSending test emails for {$mailer_count} email templates");
+    $event_count     = count($events);
+    $progress_bar     = $this->output->createProgressBar($event_count);
+    $this->info("\nSending test emails for {$event_count} email templates");
     $progress_bar->start();
-    foreach ($mailers as $record) {
+    foreach ($events as $event) {
       // Required to avoid code 550 too many emails per second
       sleep(2);
-
-      $blade_data['event_mail_subject'] = "Test for {$record[0]} {$record[1]}";
+      $this->info(" Event ID:" . $event->id);
+      $this->info(" Template:" . $event->mail_temp_name);
+      $event->to_email = 'test@test.com';
+      // $blade_data['event_mail_subject'] = "Test for event {$event->id}";
       \RapydMail::build_system_email_template(
-        $record[0], 
-        $record[1], 
-        $blade_data, 
-        $is_contact_form, 
+        $event,
+        $blade_data,
         $has_attachment
       );
 
@@ -101,143 +108,33 @@ class Email extends Command
     return $return_arr;
   }
 
-  protected static function format_data($test_data=null)
+  protected static function format_data()
   {
-    $data = [
-      'id'                => 999,
-      'ip_address'        => '127.0.0.1',
-      'timestamp'         => now(),
-      'is_agent'          => $test_data['is_agent'] ?? false,
-      'name'              => 'Test User',
-      'name_first'        => 'John',
-      'name_last'         => 'Doe',
-      'group_name'        => 'TestCo',
-      'id'                => 1,
-      'address_street'    => '2199 Test Blvd',
-      'address_street_2'  => '',
-      'address_city'      => 'Test City',
-      'address_state'     => 'CA',
-      'address_zip'       => '95993',
-      'phone_main'        => '(555) 555 - 5555',
-      'phone'             => '(555) 555 - 4455',
-      'hash_key'          => '#asddfssdfDoe',
-      'email'             => 'johndoe@test.com',
-      'bond_quotes'       => false,
-      'href'              => 'http://nothing.test',
-      'application_name'  => 'Application Name',
-      'is_esign'          => $test_data['esign'] ?? false,
-      'message'           => 'Content for message',
-      'subject'           => 'Content for subject',
-      'bond_id'           => 1,
-      'agent'             => [
-        'id'                => 999,
-        'name_first'        => 'Jane',
-        'name_last'         => 'Smith',
-        'name_full'         => 'Jane Smith',
-        'address_full'      => '2199 Test Blvd. Test City, CA 95933',
-        'address_street'    => '2199 Test Blvd.',
-        'address_street_2'  => 'STE 302',
-        'address_city'      => 'Test City',
-        'address_state'     => 'CA',
-        'address_zip'       => '95993',
-        'phone_main'        => '(555) 555 - 4455',
-        'email'             => 'janesmith@test.com',
-      ],
-      'agency'            => [
-        'name'              => 'TestAgency',
-        'address_full'      => '2199 Test Blvd. Test City, CA 95933',
-        'address_street'    => '2199 Test Blvd.',
-        'address_street_2'  => 'STE 302',
-        'address_city'      => 'Test City',
-        'address_state'     => 'CA',
-        'address_zip'       => '95993',
-        'phone_main'        => '(555) 555 - 4455',
-        'license'           => 'TEST_LICENSE',
-        'email'             => 'janesmith@test.com'
-      ],
-      'obligee'            => [
-        'name'              => 'TestObligee',
-        'address_full'      => '2199 Test Blvd. Test City, CA 95933',
-        'address_street'    => '2199 Test Blvd.',
-        'address_street_2'  => 'STE 302',
-        'address_city'      => 'Test City',
-        'address_state'     => 'CA',
-        'address_zip'       => '95993',
-        'phone_main'        => '(555) 555 - 4455',
-      ],
-      'policy'            => [
-        'id'                => 'test_policy1234',
-        'bond_number'       => 'TST45XXX12',
-        'date_issue'        => '9/99/9999',
-        'date_effective'    => '8/88/8888',
-        'date_expire'       => '7/77/7777',
-        'state_initial'     => 'NC',
-        'bond_description'  => 'TestBondDescription',
-        'days_left'         => 99,
-        'quotes'            => $test_data['quotes'] ?? [],
-        'address_delivery_street'   => '2199 Test Blvd.',
-        'address_delivery_street_2' => 'STE 302',
-        'address_delivery_city'     => 'Test City',
-        'address_delivery_state'    => 'CA',
-        'address_delivery_zip'      => '95993'
-      ],
-      'business'          => [
-        'id'                => 999,
-        'name'              => 'TestBusiness',
-        'entity'            => 'Sole Proprietorship',
-        'address_full'      => '2199 Test Blvd. Test City, CA 95933',
-        'address_street'    => '2199 Test Blvd.',
-        'address_street_2'  => 'STE 302',
-        'address_city'      => 'Test City',
-        'address_state'     => 'CA',
-        'address_zip'       => '95993',
-        'phone_main'        => '(555) 555 - 4455',
-        'email'             => 'janesmith@test.com',
-      ],
-      'bond'              => [
-        'description'       => 'TestBondDescription',
-        'limit'             => 5000,
-        'state_initial'     => 'NC',
-        'state_full'        => 'North Carolina',
-      ],
-      'surety'            => [
-        'name'              => 'TestSuretyCo'
-      ],
-      'principals'        => [$test_data['principals'] ?? []],
-      // Accounting
-      'accounting'        => [
-        'is_bill_agent'     => $test_data['is_bill_agent'] ?? false,
-        'is_installment'    => $test_data['is_installment'] ?? false,
-        'pay_in_full'       => 999,
-        'fee_total'         => 99,
-        'total_with_fees'   => 198,
-        'commission_agent'  => 25,
-        'install_down'      => 125,
-        'install_months'    => 10,
-        'install_monthly'   => 46.67,
-        'install_final'     => 43.33,
-        'payment'           => [
-          'payee_name'        => 'Dora Carol',
-          'date_paid'         => '5/5/5555',
-          'authnet'           => $test_data['authnet'] ?? false,
-          'method'            => 'Cash',
-          'amount'            => 333.33,
-          'balance_original'  => 1099,
-          'balance_prior'     => 1099,
-          'balance_current'   => 765.67,
-        ]
+    $faker = Factory::create();
+    
+    $event_models = RapydEventEmailModel::sanitized_models();
 
-      ],
-      // PDF Specific Attributes
-      'pdf'               => [
-        'title'             => $test_data['pdf_title'] ?? false,
-        'app_date'          => now()->format('m/d/Y')
-      ],
-      'authnet_response'  => 'AUTHNET ERROR REPSONSE TEST',
-      'experian_response' => 'EXPERIAN ERROR RESPONSE TEST',
-      'surety_code'       => 'HAN',
-      'quote_issues'      => 'QUOTE ISSUES HERE'
-    ];
-    return $data;
+    $a = \BondPolicyHelper::model_data_email_pdf(
+      false,
+      false,
+      [],
+      1
+    );
+
+    $mappedArr = array_merge($a, $event_models);
+
+    foreach($mappedArr as $key => $value) {
+      if(!is_array($value)) {
+        $mappedArr[$key] = $faker->word;
+      } else {
+        foreach($value as $arrKey => $val) {
+          if(!is_array($val)) {
+            $mappedArr[$key][$arrKey] = $faker->word;
+          }
+        }
+      }
+    }
+
+    return $mappedArr;
   }
 }
