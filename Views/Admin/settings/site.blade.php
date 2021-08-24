@@ -1,6 +1,8 @@
 @php
   $settings       = SettingsSite::get();
   $internal_users = \RapydUser::internal_users();
+  $bond_states    = \m_BondLibraryState::orderBy('full')->get();
+  $bond_types     = \m_BondLibraryType::orderBy('description')->get();
 @endphp
 
 @can('sys-admin-site-settings')
@@ -17,6 +19,7 @@
           <li rel="tab_1_6">PDF</li>
           <li rel="tab_1_7">Ecommerce</li>
           <li rel="tab_1_8">Policies</li>
+          <li rel="tab_1_9">Bond Library</li>
         </ul>
 
         <div class="content_wrapper">
@@ -357,14 +360,14 @@
                 {{-- BY DOMAIN --}}
                 <div class="form-group">
                   <label class="form-label">Blocked Registration Domains (Comma separated)</label>
-                  <textarea name="registration_blocked_domains" class="form-control" name="input" rows="10"
+                  <textarea name="registration_blocked_domains" class="form-control" rows="10"
                     placeholder="Enter Your Name">{{$settings['registration_blocked_domains']}}</textarea>
                 </div>
 
                 {{-- BY IPS --}}
                 <div class="form-group">
                   <label class="form-label">Blocked IPs (Comma separated, can take ranges also)</label>
-                  <textarea name="site_blocked_ips" class="form-control" name="input" rows="10"
+                  <textarea name="site_blocked_ips" class="form-control" rows="10"
                     placeholder="Enter Your Name">{{$settings['site_blocked_ips']}}</textarea>
                 </div>
               </div>
@@ -754,6 +757,66 @@
                     No Usergroup Attached to Default User
                   @endif
                 </div>
+              </div>
+            </div>
+          </div>
+
+          {{-- BOND LIBRARY --}}
+          <div class="tab_content tab_1_9" title="tab_1_9">
+            <div class="card">
+              <input type="submit" value="Save" class="btn-primary btn-save">
+              <div class="card-body">
+                {{-- Exclude Types --}}
+                <div class="form-group">
+                  <label class="form-label">Exclude Bonds By Type (Multi-Select)</label>
+                  <select 
+                    name="site_bond_exclude_type[]" 
+                    class="form-control" 
+                    multiple="multiple"
+                    style="height: 15vh"
+                  >
+                    @php
+                      $bond_type_settings = explode(',', $settings['site_bond_exclude_type']);
+                    @endphp
+                    @foreach($bond_types as $bond_type)
+                      <option 
+                        value="{{$bond_type->id}}"
+                        @if(in_array($bond_type->id, $bond_type_settings)) selected @endif 
+                      >{{$bond_type->description}}</option>
+                    @endforeach 
+                  </select>
+                </div>
+
+                {{-- Exclude States --}}
+                <div class="form-group">
+                  <label class="form-label">Exclude Bonds By State (Multi-Select)</label>
+                  <select 
+                    name="site_bond_exclude_states[]" 
+                    class="form-control" 
+                    multiple="multiple"
+                    style="height: 15vh"
+                  >
+                    @php
+                      $bond_state_settings = explode(',', $settings['site_bond_exclude_states']);
+                    @endphp
+                    @foreach($bond_states as $bond_state)
+                      <option 
+                        value="{{$bond_state->id}}"
+                        @if(in_array($bond_state->id, $bond_state_settings)) selected @endif 
+                      >{{$bond_state->full}}</option>
+                    @endforeach 
+                  </select>
+                </div>
+
+                {{-- Exclude From --}}
+                <div class="form-group">
+                  <label class="form-label">Exclude Bonds By Form (Separated by columns: EX. AK-002, NC-103, ID-230)</label>
+                  <input 
+                    name="site_bond_exclude_forms" 
+                    class="form-control" 
+                    value="{{$settings['site_bond_exclude_forms']}}"
+                  >
+                </div>                
               </div>
             </div>
           </div>

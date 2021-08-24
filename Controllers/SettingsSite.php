@@ -68,7 +68,14 @@ class SettingsSite
         $setting_two->save();
       } elseif ($key !== 'system_policy_default_usergroup') {
         $setting = Settings::find($key);
-        $setting->value = $data[$key] ?? null;
+        if (isset($data[$key])) {
+          if (is_array($data[$key])) {
+            $data_value = implode(',', $data[$key]);
+          } else {
+            $data_value = $data[$key];
+          }
+        }
+        $setting->value = $data_value ?? null;
         $setting->save();
       }
     }
