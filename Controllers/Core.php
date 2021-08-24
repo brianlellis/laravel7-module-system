@@ -471,6 +471,14 @@ class Core
     return $methods;
   }
 
+  public static function original_ip() {
+    $forwarded_ip = request()->header('X-Forwarded-For');
+    if ($forwarded_ip) {
+      return $forwarded_ip;
+    }
+    return request()->ip();
+  }
+
   /**
    *
    * UTILITY BENCHMARKING FUNCTIONS
