@@ -12,7 +12,7 @@ class Settings extends Model
 
   public static function excluded_bonds() {
     $return_arr = [
-      'forms'  => []
+      'forms'  => [],
       'states' => [],
       'types'  => []
     ];
