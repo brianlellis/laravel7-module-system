@@ -808,7 +808,7 @@
                   </select>
                 </div>
 
-                {{-- Exclude From --}}
+                {{-- Exclude Form --}}
                 <div class="form-group">
                   <label class="form-label">Exclude Bonds By Form (Separated by columns: EX. AK-002, NC-103, ID-230)</label>
                   <input 
