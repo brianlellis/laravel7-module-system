@@ -112,4 +112,28 @@ class SettingsSite
     }
     return \DB::table('settings_site')->pluck('value', 'id')->toArray();
   }
+
+  public static function excluded_bonds() {
+    $return_arr = [
+      'forms'  => [],
+      'states' => [],
+      'types'  => []
+    ];
+
+    $exclude_forms  = \DB::table('settings_site')->find('site_bond_exclude_forms')->value;
+    $exclude_states = \DB::table('settings_site')->find('site_bond_exclude_states')->value;
+    $exclude_type   = \DB::table('settings_site')->find('site_bond_exclude_type')->value;
+
+    foreach (explode(',', $exclude_forms) as $value) {
+      $return_arr['forms'][]  = $value;
+    }
+    foreach (explode(',', $exclude_states) as $value) {
+      $return_arr['states'][] = $value;
+    }
+    foreach (explode(',', $exclude_type) as $value) {
+      $return_arr['types'][]  = $value;
+    }
+
+    return $return_arr;
+  }
 }
