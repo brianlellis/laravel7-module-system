@@ -1,7 +1,7 @@
 @php
   if (auth()->user()->hasrole('Agent')) {
     $tour_check           = \Rapyd\Tours::first_visit();
-
+  
     if(auth()->user()->usergroup()->producer_agreement_ip === null) {
       $incomplete_usergroup = auth()->user()->usergroup();
     } else {

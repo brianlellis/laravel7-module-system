@@ -113,7 +113,7 @@
                         <div class="form-label">Producer Agreement</div>
                         <div class="custom-file">
                           @if($settings['sitewide_producer_agreement'])
-                            <a target="_blank" href="@url('/'){{$settings['sitewide_producer_agreement']}}">Download Agreement</a>
+                            <a target="_blank" href="{{$settings['sitewide_producer_agreement']}}">Download Agreement</a>
                           @endif
                           <input type="hidden" name="old_sitewide_producer_agreement" value="{{$settings['sitewide_producer_agreement']}}" />
                           <input type="file" class="form-control" name="sitewide_producer_agreement">

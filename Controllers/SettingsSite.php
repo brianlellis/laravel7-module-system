@@ -99,8 +99,8 @@ class SettingsSite
 
   public function store_file($file)
   {
-    $file->move(public_path('images/site'), $file->getClientOriginalName());
-    return 'images/site/' . $file->getClientOriginalName();
+    $file = \Storage::disk('s3')->put('public/files/' .  $file->getClientOriginalName(), $file);
+    return \Storage::disk('s3')->url($file);
   }
 
   // Static Functions
