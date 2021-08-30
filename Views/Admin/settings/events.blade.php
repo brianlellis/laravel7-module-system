@@ -22,7 +22,7 @@
     </div>
 
     <div class="card-body">
-      @dashboard_table('event_id , Sys_Email_Template,To_User_Template, Sys_To_Email(S), Systemwide_Send, Actions,')
+      @dashboard_table('event_id , Sys_Email_Template,To_User_Template, Sys_To_Email(S), Systemwide_Send, Actions,hide_sort,')
         @foreach($events as $event)
           @if($event->group_label === $category->group_label)
             <tr>
@@ -65,12 +65,12 @@
                 </td>
                 <td style="width: 5%">
                   <div class="form-group mt-4 ml-5">
-                    <label class="custom-switch"> 
+                    <label class="custom-switch">
                       <input type="hidden" value="0" name="systemwide_send">
                       <input type="checkbox" name="systemwide_send" class="custom-switch-input" value="1"
                         @if($event->systemwide_send === 1) checked @endif>
                       <span class="custom-switch-indicator"></span>
-                    </label> 
+                    </label>
                   </div>
                 </td>
                 <td style="width: 10%"><button type="submit" class="btn-primary btn btn-sm">Update</button></td>
